@@ -52,7 +52,7 @@ function Login() {
                                     onSubmit={(values, { setSubmitting }) => {
                                         axios({
                                             method: 'POST',
-                                            url:'http://localhost:3000/auth/login',
+                                            url:'https://pettycash-manager-7lxm.onrender.com/auth/login',
                                             mode: 'cors',
                                             headers: {
                                                 'Content-Type': 'application/json',

@@ -50,7 +50,7 @@ function Register() {
 
                   axios({
                     method:'POST',
-                    url: 'http://localhost:3000/auth/register',
+                    url: 'https://pettycash-manager-7lxm.onrender.com/auth/register',
                     headers: {
                       'Content-Type': 'application/json',
                     },
