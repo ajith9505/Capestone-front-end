@@ -59,7 +59,7 @@ function Register() {
                     .then(response => {
                       console.log(JSON.stringify(values));
                       // Assuming successful registration if no errors
-                      navigateTo('/login');
+                      navigateTo('/');
                       // Handle response data here
                       console.log(response.data);
                       setSubmitting(false);

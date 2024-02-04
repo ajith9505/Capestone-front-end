@@ -11,7 +11,7 @@ function App() {
   return (
     <UserProvider>
       <Routes>
-        <Route path="/login" Component={Login} />
+        <Route path="/" Component={Login} />
         <Route path="/register" Component={Register} />
         <Route path="/Home" Component={Home} />
         <Route path="/" element={<Navigate replace to="/home" />} />

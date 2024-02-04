@@ -9,7 +9,7 @@ function Header() {
 
     const handleLogout = () => {
         logout();
-        navigateTo('/login');
+        navigateTo('/');
     }
 
     const name = decodedToken.user.name;
