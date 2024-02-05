@@ -38,7 +38,6 @@ function Section() {
     const token = localStorage.getItem("userToken");
     const decodedToken = token ? jwtDecode(token) : {};
     const userId = decodedToken.user.id;
-    console.log(userId);
 
 
     useEffect(() => {
@@ -64,8 +63,12 @@ function Section() {
     return (
         <div className="mt-2">
             <div className="d-flex mb-2 bg-primar-subtle">
-                {showForm ? null : <button className="btn btn-outline-primary float-end me-1 " onClick={toggleForm}>Add Expense</button>}
-                {!showAddMoney ? <button className="btn btn-outline-danger float-end me-1 " onClick={() => setShowAddMoney(!showAddMoney)}>Add Money</button> : null}
+                <section>
+                    {(showForm) ? null : <button className="btn btn-outline-primary me-1 " onClick={toggleForm}>Add Expense</button>}
+                </section>
+                <section>
+                    {(!showAddMoney) ? <button className="btn btn-outline-danger me-1 " onClick={() => setShowAddMoney(!showAddMoney)}>Add Money</button> : null}
+                </section>
                 {showAddMoney ? (
                     <Formik
                         initialValues={{ amount: '' }}
@@ -94,14 +97,13 @@ function Section() {
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <div className="d-flex">
-                                    <div className="justify-content-center mt-0">
-                                        <label className="form-label" htmlFor="amount"></label>
+                                <div className="d-flex dfloat-end">
+                                    <div className="">
                                         <Field type="text" name="amount" className="form-control" />
                                     </div>
-                                    <div className="justify-content-center ms-2">
+                                    <div className=" ms-2">
                                         <button type="submit" className="btn btn-primary btn-block mb-4" disabled={isSubmitting}>
-                                            Add
+                                            Add Money
                                         </button>
                                     </div>
                                 </div>
@@ -109,7 +111,7 @@ function Section() {
                         )}
                     </Formik>) : null}
             </div>
-            <div>Balance : {expense.currentBalance}</div>
+            <div style={{ fontWeight: "bold" }} >Balance : {expense.currentBalance}</div>
             {showForm && (
                 <Formik
                     initialValues={(edit) ? editInitialValues : initValues}
@@ -117,10 +119,10 @@ function Section() {
                     onSubmit={(values, { setSubmitting, resetForm }) => {
 
                         if (!edit) {
-                            addNewExpense(values, { setSubmitting, resetForm });
+                            addNewExpense(values, userId, { setSubmitting, resetForm });
                         }
                         else {
-                            editRow(values, { setSubmitting, resetForm });
+                            editRow(values, userId, { setSubmitting, resetForm });
                         }
                     }}>
                     {({ isSubmitting }) => (
@@ -142,7 +144,7 @@ function Section() {
                                 </ErrorMessage>
                             </div>
 
-                            {/* Password input  */}
+                            
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="paidFor">Paid For</label>
                                 <Field type="text" name='paidFor' className="form-control" />
@@ -162,7 +164,6 @@ function Section() {
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="description">Description</label>
                                 <Field type="text" name='description' className="form-control" />
-                                {/* <ErrorMessage name='description' component="div"></ErrorMessage> */}
                             </div>
 
                             {/* Submit button  */}

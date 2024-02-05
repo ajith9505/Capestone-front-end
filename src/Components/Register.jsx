@@ -33,8 +33,7 @@ function Register() {
             <p className="mb-4 opacity-70" style={{ color: "hsl(218, 81%, 85%)" }}>
               Petty cash is a small amount of cash that is kept on the company
               premises to pay for minor cash needs. Examples of these payments
-              areoffice supplies, cards, flowers, and so forth. Petty cash is
-              stored in a petty cash drawer or box near where it is most needed.
+              areoffice supplies, cards, flowers, and so forth.
             </p>
           </div>
 
@@ -44,68 +43,64 @@ function Register() {
 
             <div className="card bg-glass">
               <div className="card-body px-4 py-5 px-md-5">
-                <Formik initialValues={{ name: '', email: '', password: '' }} validationSchema={RegistrationSchema} 
-                onSubmit={(values, { setSubmitting, resetForm }) => {
-                  console.log(JSON.stringify(values));
+                <Formik initialValues={{ name: '', email: '', password: '' }} validationSchema={RegistrationSchema}
+                  onSubmit={(values, { setSubmitting, resetForm }) => {
+                    console.log(JSON.stringify({ values }));
 
-                  axios({
-                    method:'POST',
-                    url: 'https://pettycash-manager-7lxm.onrender.com/auth/register',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    data: JSON.stringify(values),
-                  })
-                    .then(response => {
-                      console.log(JSON.stringify(values));
-                      // Assuming successful registration if no errors
-                      navigateTo('/');
-                      // Handle response data here
-                      console.log(response.data);
-                      setSubmitting(false);
-                      resetForm()
+                    axios({
+                      method: 'POST',
+                      url: 'https://pettycash-manager-7lxm.onrender.com/auth/register',
+                      mode: 'cors',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      data: JSON.stringify({ ...values }),
                     })
-                    .catch(error => {
-                      console.error('Error:', error);
-                      setSubmitting(false);
-                    })
-                }}>
+                      .then(response => {
+                        console.log(JSON.stringify(values));
+                        // Assuming successful registration if no errors
+                        navigateTo('/');
+                        // Handle response data here
+                        console.log(response.data);
+                        setSubmitting(false);
+                        resetForm()
+                      })
+                      .catch(error => {
+                        console.error('Error:', error);
+                        setSubmitting(false);
+                      })
+                  }}>
                   {({ isSubmitting }) => (
                     <Form>
                       {/* 2 column grid layout with text inputs for the first and last names  */}
-                      {/* <div className="row"> */}
-                      {/* <div className="col-md-6 mb-4"> */}
+
+                    {/* Name input */}
                       <div className="form-outline">
-                        <Field type="text" name="name" className="form-control" />
                         <label className="form-label" >Name</label>
+                        <Field type="text" name="name" className="form-control" />
+                        <ErrorMessage name='name' component="div"></ErrorMessage>
                       </div>
-                      {/* </div> */}
-                      {/* <div className="col-md-6 mb-4">
-                          <div className="form-outline">
-                            <Field type="text" id="form3Example2" className="form-control" />
-                            <label className="form-label" htmlFor="form3Example2">Last name</label>
-                          </div>
-                        </div> */}
-                      <ErrorMessage name='name' component="div"></ErrorMessage>
-                      {/* </div> */}
+
+
                       {/* Email input  */}
                       <div className="form-outline mb-4">
-                        <Field type="email" name='email' className="form-control" />
                         <label className="form-label" >Email address</label>
+                        <Field type="email" name='email' className="form-control" />
+                        <ErrorMessage name='email' component="div"></ErrorMessage>
                       </div>
-                      <ErrorMessage name='email' component="div"></ErrorMessage>
 
                       {/* Password input  */}
                       <div className="form-outline mb-4">
-                        <Field type="password" name='password' className="form-control" />
                         <label className="form-label" >Password</label>
+                        <Field type="password" name='password' className="form-control" />
+                        <ErrorMessage name='password' component="div"></ErrorMessage>
                       </div>
-                      <ErrorMessage name='password' component="div"></ErrorMessage>
+
                       {/* Submit button  */}
                       <button type="submit" className="btn btn-primary btn-block mb-4" disabled={isSubmitting}>
                         Sign up
                       </button>
-                      <p>Not a member? <Link to="/">Register</Link></p>
+                      <Link to="/">Login</Link>
                     </Form>
                   )}
                 </Formik>

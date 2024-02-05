@@ -16,7 +16,6 @@ function App() {
         <Route path="/register" Component={Register} />
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="/home" Component={Home} />
-        {/* <Navigate from='/' to='/register'/>  */}
       </Routes>
       </Router>
     </UserProvider>

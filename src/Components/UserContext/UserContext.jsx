@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-  const addNewExpense = ( values, { setSubmitting, resetForm } ) => {
+  const addNewExpense = ( values, userId, { setSubmitting, resetForm } ) => {
     axios({
       method: 'POST',
       url: 'https://pettycash-manager-7lxm.onrender.com/home/add-expence',
@@ -85,7 +85,7 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const editRow = ( values, { setSubmitting, resetForm } ) => {
+  const editRow = ( values, userId, { setSubmitting, resetForm } ) => {
     axios({
       method: 'PUT',
       url: 'https://pettycash-manager-7lxm.onrender.com/home/edit',

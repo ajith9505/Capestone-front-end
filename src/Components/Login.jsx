@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { jwtDecode } from 'jwt-decode'
 import { useUserContext } from './UserContext/UserContext'
 import './Login.css'
 import axios from 'axios'
@@ -19,7 +18,6 @@ const LoginSchema = Yup.object().shape({
 
 function Login() {
 
-    
     const { setUser } = useUserContext();
     const navigateTo = useNavigate();
     return (
@@ -35,8 +33,7 @@ function Login() {
                         <p className="mb-4 opacity-70" style={{ color: "hsl(218, 81%, 85%)" }}>
                             Petty cash is a small amount of cash that is kept on the company
                             premises to pay for minor cash needs. Examples of these payments
-                            areoffice supplies, cards, flowers, and so forth. Petty cash is
-                            stored in a petty cash drawer or box near where it is most needed.
+                            areoffice supplies, cards, flowers, and so forth.
                         </p>
                     </div>
 
@@ -49,10 +46,10 @@ function Login() {
                                 <Formik
                                     initialValues={{ email: '', password: '' }}
                                     validationSchema={LoginSchema}
-                                    onSubmit={(values, { setSubmitting }) => {
+                                    onSubmit={(values, { setSubmitting, setFieldError }) => {
                                         axios({
                                             method: 'POST',
-                                            url:'https://pettycash-manager-7lxm.onrender.com/auth/login',
+                                            url: 'https://pettycash-manager-7lxm.onrender.com/auth/login',
                                             mode: 'cors',
                                             headers: {
                                                 'Content-Type': 'application/json',
@@ -67,54 +64,33 @@ function Login() {
                                                 setSubmitting(false);
                                             })
                                             .catch(function (error) {
-                                                console.error('Error:', error);
+                                                setFieldError('firebaseErrorMessage', error.message);
+                                                console.error(error);
                                                 setSubmitting(false);
                                             });
-                                        // fetch('http://localhost:3000/auth/login', {
-                                        //     method: 'POST',
-                                        //     mode: 'cors',
-                                        //     headers: {
-                                        //         'Content-Type': 'application/json',
-                                        //     },
-                                        //     body: JSON.stringify(values),
-                                        // })
-                                        //     .then(response => response.json())
-                                        //     .then(data => {
-                                        //         // Handle response data here
-                                        //         console.log(data);
-                                        //         localStorage.setItem('userToken', data.token);
-                                        //         setUser({ token: data.token })
-                                        //         navigateTo('/home');
-                                        //         setSubmitting(false);
-                                        //     })
-                                        //     .catch(error => {
-                                        //         console.error('Error:', error);
-                                        //         setSubmitting(false);
-                                        //     })
-
                                     }}>
                                     {({ isSubmitting }) => (
                                         <Form>
                                             {/* Email input  */}
                                             <div className="form-outline mb-4">
-                                                <Field type="email" name="email" className="form-control" />
                                                 <label className="form-label" htmlFor="email">Email address</label>
+                                                <Field type="email" name="email" className="form-control" />
+                                                <ErrorMessage name='email' component="div"></ErrorMessage>
                                             </div>
-                                            <ErrorMessage name='email' component="div"></ErrorMessage>
 
                                             {/* Password input  */}
                                             <div className="form-outline mb-4">
-                                                <Field type="password" name="password" className="form-control" />
                                                 <label className="form-label" htmlFor="password">Password</label>
+                                                <Field type="password" name="password" className="form-control" />
+                                                <ErrorMessage name='password' component="div"></ErrorMessage>
                                             </div>
-                                            <ErrorMessage name='password' component="div"></ErrorMessage>
 
                                             {/* Submit button  */}
                                             <button type="submit" className="btn btn-primary btn-block mb-4" disabled={isSubmitting}>
                                                 Login
                                             </button>
                                             <br />
-                                            <Link to="/register">Register</Link>
+                                            <p>Not a member? <Link to="/register">Register</Link></p>
                                         </Form>
                                     )}
                                 </Formik>
