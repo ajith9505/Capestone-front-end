@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom"
 import Login from "./Components/Login"
 import Register from "./Components/Register"
 import Home from "./Components/Home"
@@ -10,13 +10,15 @@ function App() {
 
   return (
     <UserProvider>
+      <Router>
       <Routes>
-        <Route path="/" Component={Login} />
+        <Route path="/login" Component={Login} />
         <Route path="/register" Component={Register} />
-        <Route path="/Home" Component={Home} />
-        <Route path="/" element={<Navigate replace to="/home" />} />
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/home" Component={Home} />
         {/* <Navigate from='/' to='/register'/>  */}
       </Routes>
+      </Router>
     </UserProvider>
   )
 }

@@ -4,6 +4,7 @@ import { useUserContext } from './UserContext/UserContext'
 import * as Yup from 'yup'
 import './Section.css'
 import axios from "axios"
+import { jwtDecode } from "jwt-decode"
 
 const ValidateSchema = Yup.object().shape({
     date: Yup.date()
@@ -26,7 +27,7 @@ function Section() {
     const [showAddMoney, setShowAddMoney] = useState(false);
 
     const {
-        decodedToken, showForm,
+        showForm,
         setShowForm, expense,
         loading, error, edit,
         editInitialValues, deleteRow,
@@ -34,7 +35,10 @@ function Section() {
         editRow, handleEdit,
     } = useUserContext();
 
+    const token = localStorage.getItem("userToken");
+    const decodedToken = token ? jwtDecode(token) : {};
     const userId = decodedToken.user.id;
+
 
     useEffect(() => {
         fetchExpense();

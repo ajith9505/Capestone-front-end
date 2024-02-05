@@ -29,10 +29,6 @@ export const UserProvider = ({ children }) => {
     description: ''
   });
 
-  const token = localStorage.getItem("userToken");
-  const decodedToken = token ? jwtDecode(token) : {};
-  const userId = decodedToken.user.id;
-
   const deleteRow = async (userId, rowId) => {
     axios({
       method: 'DELETE',
@@ -129,7 +125,7 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         user, setUser,
-        logout, decodedToken,
+        logout,
         showForm, setShowForm,
         expense, loading, error,
         edit, editInitialValues,
