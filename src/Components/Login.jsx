@@ -78,7 +78,7 @@ function Login() {
                                                 <label className="form-label" style={{ fontWeight: 'bold', fontSize : '14px'}} htmlFor="email">Email address</label>
                                                 <Field type="email" name="email" className="form-control" />
                                                 <ErrorMessage name='email'>
-                                                    {msg => <div className="text-danger" style={{ fontWeight: 'bold', fontSize : '13px'}}>{msg}</div>}
+                                                    {msg => <div className="text-danger" style={{ fontSize : '13px'}}>{msg}</div>}
                                                 </ErrorMessage>
 
                                             </div>
@@ -88,7 +88,7 @@ function Login() {
                                                 <label className="form-label" style={{ fontWeight: 'bold', fontSize : '14px'}} htmlFor="password">Password</label>
                                                 <Field type="password" name="password" className="form-control" />
                                                 <ErrorMessage name='password'>
-                                                    {msg => <div className="text-danger" style={{ fontWeight: 'bold', fontSize : '13px'}}>{msg}</div>}
+                                                    {msg => <div className="text-danger" style={{ fontSize : '13px'}}>{msg}</div>}
                                                 </ErrorMessage>
                                                 <div>
                                                 </div>
