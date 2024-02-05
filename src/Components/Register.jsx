@@ -100,7 +100,9 @@ function Register() {
                       <button type="submit" className="btn btn-primary btn-block mb-4" disabled={isSubmitting}>
                         Sign up
                       </button>
+                      <div>
                       <Link to="/">Login</Link>
+                      </div>
                     </Form>
                   )}
                 </Formik>

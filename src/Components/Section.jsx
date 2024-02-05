@@ -6,6 +6,7 @@ import './Section.css'
 import axios from "axios"
 import { jwtDecode } from "jwt-decode"
 
+//Validation schema for inputs
 const ValidateSchema = Yup.object().shape({
     date: Yup.date()
         .required('Required'),
@@ -26,6 +27,7 @@ function Section() {
 
     const [showAddMoney, setShowAddMoney] = useState(false);
 
+    //Exporting state and functions from context
     const {
         showForm,
         setShowForm, expense,
@@ -35,6 +37,7 @@ function Section() {
         editRow, handleEdit,
     } = useUserContext();
 
+    //Decode token to get userId
     const token = localStorage.getItem("userToken");
     const decodedToken = token ? jwtDecode(token) : {};
     const userId = decodedToken.user.id;
@@ -74,6 +77,7 @@ function Section() {
                         initialValues={{ amount: '' }}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
                             const currentBalance = expense.currentBalance;
+                            // USed to add money
                             axios({
                                 method: 'POST',
                                 url: 'https://pettycash-manager-7lxm.onrender.com/home/add-balance',
@@ -97,7 +101,7 @@ function Section() {
                     >
                         {({ isSubmitting }) => (
                             <Form>
-                                <div className="d-flex dfloat-end">
+                                <div className="d-flex">
                                     <div className="">
                                         <Field type="text" name="amount" className="form-control" />
                                     </div>
@@ -127,7 +131,9 @@ function Section() {
                     }}>
                     {({ isSubmitting }) => (
 
+
                         <Form className="m-5">
+                            {/* Date field */}
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="date">Date</label>
                                 <Field type="date" name="date" className="form-control" />
@@ -136,6 +142,7 @@ function Section() {
                                 </ErrorMessage>
                             </div>
 
+                            {/* Paid to field */}
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="paidto" >Paid To</label>
                                 <Field type="text" name='paidTo' className="form-control" />
@@ -144,7 +151,7 @@ function Section() {
                                 </ErrorMessage>
                             </div>
 
-                            
+                            {/* PAid for field */}
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="paidFor">Paid For</label>
                                 <Field type="text" name='paidFor' className="form-control" />
@@ -153,6 +160,7 @@ function Section() {
                                 </ErrorMessage>
                             </div>
 
+                            {/* Amount field */}
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="amount">Amount</label>
                                 <Field type="number" name='amount' className="form-control" />
@@ -161,6 +169,7 @@ function Section() {
                                 </ErrorMessage>
                             </div>
 
+                            {/* Description field */}
                             <div className="form-outline mb-4">
                                 <label className="form-label" htmlFor="description">Description</label>
                                 <Field type="text" name='description' className="form-control" />
@@ -178,7 +187,7 @@ function Section() {
                     )}
                 </Formik>
             )}
-
+            {/* Table for shoe list */}
             <div className="bg-image h-100" style={{ backgroundColor: '#f5f7fa' }}>
                 <div className="mask d-flex align-items-center h-100">
                     <div className="container">
@@ -201,7 +210,7 @@ function Section() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                    {/* Creating row for each element */}
                                                     {expense.data.map((exp, index) => (
                                                         <tr key={exp._id}>
                                                             <td>{index + 1}</td>

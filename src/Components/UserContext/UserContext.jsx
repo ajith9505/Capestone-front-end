@@ -29,6 +29,7 @@ export const UserProvider = ({ children }) => {
     description: ''
   });
 
+  //delete specified row
   const deleteRow = async (userId, rowId) => {
     axios({
       method: 'DELETE',
@@ -47,6 +48,7 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  //Fetch user data using api
   const fetchExpense = async (userId) => {
 
     try {
@@ -63,6 +65,7 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+  //add new expense in list
   const addNewExpense = ( values, userId, { setSubmitting, resetForm } ) => {
     axios({
       method: 'POST',
@@ -85,6 +88,7 @@ export const UserProvider = ({ children }) => {
       })
   }
 
+  //Edit specified row
   const editRow = ( values, userId, { setSubmitting, resetForm } ) => {
     axios({
       method: 'PUT',
