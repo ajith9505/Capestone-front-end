@@ -10,16 +10,42 @@ const RegistrationSchema = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
-    .required('Required'),
+    .required('Name is required'),
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Email is required'),
   password: Yup.string()
     .min(8, 'Password must be at lease 8 characters.')
-    .required('Required'),
+    .required('Password is required'),
 });
 
 function Register() {
+
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    await axios({
+      method: 'POST',
+      url: 'https://pettycash-manager-7lxm.onrender.com/auth/register',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({ ...values }),
+    })
+      .then(response => {
+        console.log(JSON.stringify(values));
+        // Assuming successful registration if no errors
+        navigateTo('/');
+        // Handle response data here
+        console.log(response.data);
+        setSubmitting(false);
+      })
+      .catch(error => {
+        setFieldError('email', error.response.data.msg);
+        console.log(error);
+        setSubmitting(false);
+      })
+  };
+
   const navigateTo = useNavigate();
   return (
     <section className="background-radial-gradient overflow-hidden">
@@ -42,58 +68,40 @@ function Register() {
             <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
             <div className="card bg-glass">
-              <div className="card-body px-4 py-5 px-md-5">
+              <h3 className='mt-3 ms-5'>Register</h3>
+              <div className="card-body px-4 py-3 px-md-5">
                 <Formik initialValues={{ name: '', email: '', password: '' }} validationSchema={RegistrationSchema}
-                  onSubmit={(values, { setSubmitting, resetForm }) => {
-                    console.log(JSON.stringify({ values }));
-
-                    axios({
-                      method: 'POST',
-                      url: 'https://pettycash-manager-7lxm.onrender.com/auth/register',
-                      mode: 'cors',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      data: JSON.stringify({ ...values }),
-                    })
-                      .then(response => {
-                        console.log(JSON.stringify(values));
-                        // Assuming successful registration if no errors
-                        navigateTo('/');
-                        // Handle response data here
-                        console.log(response.data);
-                        setSubmitting(false);
-                        resetForm()
-                      })
-                      .catch(error => {
-                        console.error('Error:', error);
-                        setSubmitting(false);
-                      })
-                  }}>
+                  onSubmit={handleSubmit}>
                   {({ isSubmitting }) => (
                     <Form>
                       {/* 2 column grid layout with text inputs for the first and last names  */}
 
-                    {/* Name input */}
-                      <div className="form-outline">
-                        <label className="form-label" >Name</label>
+                      {/* Name input */}
+                      <div className="form-outline mb-4">
+                        <label className="form-label" style={{ fontWeight: 'bold', fontSize: '14px' }}>Name</label>
                         <Field type="text" name="name" className="form-control" />
-                        <ErrorMessage name='name' component="div"></ErrorMessage>
+                        <ErrorMessage name='name'>
+                          {msg => <div className="text-danger" style={{ fontSize: '13px' }}>{msg}</div>}
+                        </ErrorMessage>
                       </div>
 
 
                       {/* Email input  */}
                       <div className="form-outline mb-4">
-                        <label className="form-label" >Email address</label>
+                        <label className="form-label" style={{ fontWeight: 'bold', fontSize: '14px' }}>Email</label>
                         <Field type="email" name='email' className="form-control" />
-                        <ErrorMessage name='email' component="div"></ErrorMessage>
+                        <ErrorMessage name='email'>
+                          {msg => <div className="text-danger" style={{ fontSize: '13px' }}>{msg}</div>}
+                        </ErrorMessage>
                       </div>
 
                       {/* Password input  */}
                       <div className="form-outline mb-4">
-                        <label className="form-label" >Password</label>
+                        <label className="form-label" style={{ fontWeight: 'bold', fontSize: '14px' }}>Password</label>
                         <Field type="password" name='password' className="form-control" />
-                        <ErrorMessage name='password' component="div"></ErrorMessage>
+                        <ErrorMessage name='password'>
+                          {msg => <div className="text-danger" style={{ fontSize: '13px' }}>{msg}</div>}
+                        </ErrorMessage>
                       </div>
 
                       {/* Submit button  */}
@@ -101,7 +109,7 @@ function Register() {
                         Sign up
                       </button>
                       <div>
-                      <Link to="/">Login</Link>
+                        <Link to="/">Login</Link>
                       </div>
                     </Form>
                   )}

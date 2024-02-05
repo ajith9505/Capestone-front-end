@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -18,8 +18,31 @@ const LoginSchema = Yup.object().shape({
 
 function Login() {
 
+    const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+       await axios({
+            method: 'POST',
+            url: 'https://pettycash-manager-7lxm.onrender.com/auth/login',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: JSON.stringify(values),
+        })
+            .then((response) => {
+                localStorage.setItem('userToken', response.data.token);
+                setUser({ token: response.data.token })
+                navigateTo('/home');
+                setSubmitting(false);
+            })
+            .catch(function (error) {
+                setFieldError(error.response.data.message == 'user not found' ? 'email' : 'password', error.response.data.message);
+                setSubmitting(false);
+            })
+    };
+
     const { setUser } = useUserContext();
     const navigateTo = useNavigate();
+
     return (
         // Section: Design Block 
         <section className="background-radial-gradient overflow-hidden">
@@ -42,47 +65,33 @@ function Login() {
                         <div id="radius-shape-2" className="position-absolute shadow-5-strong"></div>
 
                         <div className="card bg-glass">
-                            <div className="card-body px-4 py-5 px-md-5">
+                        <h3 className='mt-3 ms-5'>Login</h3>
+                            <div className="card-body px-4 py-3 px-md-5">
                                 <Formik
                                     initialValues={{ email: '', password: '' }}
                                     validationSchema={LoginSchema}
-                                    onSubmit={(values, { setSubmitting, setFieldError }) => {
-                                        axios({
-                                            method: 'POST',
-                                            url: 'https://pettycash-manager-7lxm.onrender.com/auth/login',
-                                            mode: 'cors',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                            },
-                                            data: JSON.stringify(values),
-                                        })
-                                            .then((response) => {
-                                                console.log(response.data);
-                                                localStorage.setItem('userToken', response.data.token);
-                                                setUser({ token: response.data.token })
-                                                navigateTo('/home');
-                                                setSubmitting(false);
-                                            })
-                                            .catch(function (error) {
-                                                setFieldError('firebaseErrorMessage', error.message);
-                                                console.error(error);
-                                                setSubmitting(false);
-                                            });
-                                    }}>
+                                    onSubmit={handleSubmit}>
                                     {({ isSubmitting }) => (
                                         <Form>
                                             {/* Email input  */}
                                             <div className="form-outline mb-4">
-                                                <label className="form-label" htmlFor="email">Email address</label>
+                                                <label className="form-label" style={{ fontWeight: 'bold', fontSize : '14px'}} htmlFor="email">Email address</label>
                                                 <Field type="email" name="email" className="form-control" />
-                                                <ErrorMessage name='email' component="div"></ErrorMessage>
+                                                <ErrorMessage name='email'>
+                                                    {msg => <div className="text-danger" style={{ fontWeight: 'bold', fontSize : '13px'}}>{msg}</div>}
+                                                </ErrorMessage>
+
                                             </div>
 
                                             {/* Password input  */}
                                             <div className="form-outline mb-4">
-                                                <label className="form-label" htmlFor="password">Password</label>
+                                                <label className="form-label" style={{ fontWeight: 'bold', fontSize : '14px'}} htmlFor="password">Password</label>
                                                 <Field type="password" name="password" className="form-control" />
-                                                <ErrorMessage name='password' component="div"></ErrorMessage>
+                                                <ErrorMessage name='password'>
+                                                    {msg => <div className="text-danger" style={{ fontWeight: 'bold', fontSize : '13px'}}>{msg}</div>}
+                                                </ErrorMessage>
+                                                <div>
+                                                </div>
                                             </div>
 
                                             {/* Submit button  */}
@@ -99,7 +108,7 @@ function Login() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     )
 }
 
