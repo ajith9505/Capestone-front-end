@@ -38,10 +38,11 @@ function Section() {
     const token = localStorage.getItem("userToken");
     const decodedToken = token ? jwtDecode(token) : {};
     const userId = decodedToken.user.id;
+    console.log(userId);
 
 
     useEffect(() => {
-        fetchExpense();
+        fetchExpense(userId);
     }, [expense]);
 
     if (loading) return <p>Loading...</p>;

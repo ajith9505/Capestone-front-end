@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
       })
   }
 
-  const fetchExpense = async () => {
+  const fetchExpense = async (userId) => {
 
     try {
       const response = await fetch(`https://pettycash-manager-7lxm.onrender.com/home/user-expenses/${userId}`);
